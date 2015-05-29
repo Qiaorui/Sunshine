@@ -51,12 +51,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
-    private ArrayAdapter<String> mForecastAdapter;
+    //private ArrayAdapter<String> mForecastAdapter;
     private final Context mContext;
 
-    public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter) {
+    public FetchWeatherTask(Context context) {
         mContext = context;
-        mForecastAdapter = forecastAdapter;
+        //mForecastAdapter = forecastAdapter;
     }
 
     private boolean DEBUG = true;
@@ -64,6 +64,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     /* The date/time conversion code is going to be moved outside the asynctask later,
      * so for convenience we're breaking it out into its own method now.
      */
+    /*
     private String getReadableDateString(long time){
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
@@ -71,10 +72,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
         return format.format(date).toString();
     }
-
+    */
     /**
      * Prepare the weather high/lows for presentation.
      */
+    /*
     private String formatHighLows(double high, double low) {
         // Data is fetched in Celsius by default.
         // If user prefers to see in Fahrenheit, convert the values here.
@@ -100,7 +102,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         String highLowStr = roundedHigh + "/" + roundedLow;
         return highLowStr;
-    }
+    }*/
 
     /**
      * Helper method to handle insertion of a new location in the weather database.
@@ -147,6 +149,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         the UX expects so that we can continue to test the application even once we begin using
         the database.
      */
+    /*
     String[] convertContentValuesToUXFormat(Vector<ContentValues> cvv) {
         // return strings to keep UI functional for now
         String[] resultStrs = new String[cvv.size()];
@@ -161,7 +164,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                     " - " + highAndLow;
         }
         return resultStrs;
-    }
+    }*/
 
     /**
      * Take the String representing the complete forecast in JSON Format and
@@ -310,7 +313,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
             Cursor cur = mContext.getContentResolver().query(weatherForLocationUri,
                     null, null, null, sortOrder);
-
+            /*
             cVVector = new Vector<ContentValues>(cur.getCount());
             if ( cur.moveToFirst() ) {
                 do {
@@ -323,7 +326,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             Log.d(LOG_TAG, "FetchWeatherTask Complete. " + cVVector.size() + " Inserted");
 
             String[] resultStrs = convertContentValuesToUXFormat(cVVector);
-            return resultStrs;
+
+            return resultStrs;*/
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
@@ -428,14 +432,5 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return null;
     }
 
-    @Override
-    protected void onPostExecute(String[] result) {
-        if (result != null && mForecastAdapter != null) {
-            mForecastAdapter.clear();
-            for(String dayForecastStr : result) {
-                mForecastAdapter.add(dayForecastStr);
-            }
-            // New data is back from the server.  Hooray!
-        }
-    }
+
 }
